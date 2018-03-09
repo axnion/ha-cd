@@ -1,0 +1,14 @@
+---
+all:
+  hosts:
+    mgmt:
+      ansible_host: 10.0.10.10
+  children:
+    site_a:
+      hosts:
+        lb_a:
+          ansible_host: 10.0.10.20
+        web_a:
+          ansible_host: 10.0.10.21
+        db_a:
+          ansible_host: 10.0.10.22

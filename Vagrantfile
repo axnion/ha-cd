@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
     end
 
     # Load Balancer
-    config.vm.define :lb1 do |lb1|
+    config.vm.define :lb_a do |lb1|
         lb1.vm.box = "bento/ubuntu-16.04"
         lb1.vm.network :private_network, ip: "10.0.10.20"
         lb1.vm.network "forwarded_port", guest: 80, host: 8080
@@ -34,7 +34,7 @@ Vagrant.configure("2") do |config|
     end
 
     # Web Server
-    config.vm.define :web1 do |web1|
+    config.vm.define :web_a do |web1|
         web1.vm.box = "bento/ubuntu-16.04"
         web1.vm.network :private_network, ip: "10.0.10.30"
         web1.vm.network "forwarded_port", guest: 80, host: 8081
@@ -44,7 +44,7 @@ Vagrant.configure("2") do |config|
     end
 
     # Database
-    config.vm.define :db1 do |db1|
+    config.vm.define :db_a do |db1|
         db1.vm.box = "bento/ubuntu-16.04"
         db1.vm.network :private_network, ip: "10.0.10.30"
         db1.vm.network "forwarded_port", guest: 80, host: 8082
