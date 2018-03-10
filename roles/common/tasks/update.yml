@@ -1,0 +1,9 @@
+- name: upgrading software from apt
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: install git
+  apt:
+    name: git
+    state: present
