@@ -1,0 +1,13 @@
+---
+- hosts: app_*
+  tasks:
+    - ping:
+
+- hosts: db_*
+  tasks:
+    - ping:
+
+
+- hosts: lb_*
+  tasks:
+    - ping:
