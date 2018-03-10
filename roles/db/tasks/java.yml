@@ -1,0 +1,18 @@
+# Installing Oracle Java 8
+# TODO: Update to license is not accepted every time.
+- name: adding ppa
+  apt_repository:
+    repo: ppa:webupd8team/java
+    state: present
+
+- name: setting license to selected
+  shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+  when:
+
+- name: setting oracle license to seen
+  shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+
+- name: installing java
+  apt:
+    name: "oracle-java8-set-default"
+    update-cache: yes
