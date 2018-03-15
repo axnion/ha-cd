@@ -1,0 +1,32 @@
+# Install NodeJS 9.x
+- name: check if nodejs is installed
+  command: node -v
+  register: result
+  changed_when: no
+  ignore_errors: true
+
+- name: download setup script
+  get_url:
+    url: https://deb.nodesource.com/setup_9.x
+    force: yes
+    dest: /tmp/
+    mode: 0755
+  when: result|failed
+
+- name: run setup script
+  command: /tmp/setup_9.x
+  args:
+    chdir: /tmp/
+  when: result|failed
+
+- name: remove setup script
+  file:
+    path: /tmp/setup_9.x
+    state: absent
+  when: result|failed
+
+- name: install nodejs
+  apt:
+    name: nodejs
+    update_cache: yes
+  when: result|failed
