@@ -8,11 +8,12 @@
 - hosts: db_*
   become: yes
   roles:
-    - common
-    - app
-    - db
+#    - common
+#    - app
+#    - db
 
 - hosts: lb_*
   become: yes
-  tasks:
-    - ping:
+  roles:
+    - common
+    - lb

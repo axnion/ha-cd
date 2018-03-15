@@ -1,0 +1,10 @@
+- name: installing haproxy
+  apt:
+    name: haproxy
+
+- name: apply configuration
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+  notify:
+    - restart haproxy
