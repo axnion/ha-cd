@@ -1,14 +1,16 @@
 ---
 - hosts: app_*
   become: yes
-  tasks:
-    - ping:
+  roles:
+    - common
+    - app
 
 - hosts: db_*
   become: yes
   roles:
+    - common
+    - app
     - db
-
 
 - hosts: lb_*
   become: yes

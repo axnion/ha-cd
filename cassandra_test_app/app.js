@@ -6,9 +6,9 @@ const client = new cassandra.Client({
   authProvider: new cassandra.auth.PlainTextAuthProvider('cassandra', 'cassandra')
 })
 
-client.execute("CREATE KEYSPACE IF NOT EXISTS vq_ai_tracking WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };")
+client.execute("CREATE KEYSPACE IF NOT EXISTS test WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };")
 .then(() =>
-  client.execute("CREATE TABLE IF NOT EXISTS vq_ai_tracking.actions(userId uuid primary key);",
+  client.execute("CREATE TABLE IF NOT EXISTS test.testing(userId uuid primary key);",
   (err, result) => {
       console.log("ERROR")
       console.log(err, result);
