@@ -4,6 +4,22 @@ all:
     mgmt:
       ansible_host: 10.0.10.10
   children:
+
+# CLUSTER GROUPS ---------------------------------------------------------------
+    app:
+      hosts:
+        app_a:
+
+    lb:
+      hosts:
+        lb_a:
+
+    db:
+      hosts:
+        db_a:
+        db_b:
+
+# SITE GROUPS ------------------------------------------------------------------
     site_a:
       hosts:
         app_a:
@@ -13,11 +29,11 @@ all:
         lb_a:
           ansible_host: 10.0.10.20
 
-#    site_b:
-#      hosts:
-#        app_b:
-#          ansible_host: 10.0.10.31
-#        db_b:
-#          ansible_host: 10.0.10.32
-#        lb_b:
-#          ansible_host: 10.0.10.30
+    site_b:
+      hosts:
+        app_b:
+          ansible_host: 10.0.10.31
+        db_b:
+          ansible_host: 10.0.10.32
+        lb_b:
+          ansible_host: 10.0.10.30

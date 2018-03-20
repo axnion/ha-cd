@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
-127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+127.0.0.1   localhost
+127.0.1.1   vagrant.vm    vagrant    {{ inventory_hostname }}
 
 {% for item in hostvars %}
 {% set short_name = item.split('.') %}
