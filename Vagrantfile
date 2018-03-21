@@ -37,7 +37,7 @@ Vagrant.configure("2") do |config|
     config.vm.define :app_a do |app_a|
         app_a.vm.box = "bento/ubuntu-16.04"
         app_a.vm.network :private_network, ip: "10.0.10.21"
-        app_a.vm.network "forwarded_port", guest: 80, host: 8081
+        app_a.vm.network "forwarded_port", guest: 3000, host: 3000
         app_a.vm.provider "virtualbox" do |vb|
             vb.memory = "1024"
         end
@@ -54,25 +54,25 @@ Vagrant.configure("2") do |config|
     end
 
     # Site B | Load Balancer
-    config.vm.define :lb_b do |lb_b|
-        lb_b.vm.box = "bento/ubuntu-16.04"
-        lb_b.vm.network :private_network, ip: "10.0.10.30"
-        lb_b.vm.network "forwarded_port", guest: 80, host: 9080
-        lb_b.vm.provider "virtualbox" do |vb|
-            vb.memory = "1024"
-        end
-    end
-
-    # Site B | Application Server
-    config.vm.define :app_b do |app_b|
-        app_b.vm.box = "bento/ubuntu-16.04"
-        app_b.vm.network :private_network, ip: "10.0.10.31"
-        app_b.vm.network "forwarded_port", guest: 80, host: 9081
-        app_b.vm.provider "virtualbox" do |vb|
-            vb.memory = "1024"
-        end
-    end
-
+#    config.vm.define :lb_b do |lb_b|
+#        lb_b.vm.box = "bento/ubuntu-16.04"
+#        lb_b.vm.network :private_network, ip: "10.0.10.30"
+#        lb_b.vm.network "forwarded_port", guest: 80, host: 9080
+#        lb_b.vm.provider "virtualbox" do |vb|
+#            vb.memory = "1024"
+#        end
+#    end
+#
+#    # Site B | Application Server
+#    config.vm.define :app_b do |app_b|
+#        app_b.vm.box = "bento/ubuntu-16.04"
+#        app_b.vm.network :private_network, ip: "10.0.10.31"
+#        app_b.vm.network "forwarded_port", guest: 80, host: 9081
+#        app_b.vm.provider "virtualbox" do |vb|
+#            vb.memory = "1024"
+#        end
+#    end
+#
     # Site B | Database
     config.vm.define :db_b do |db_b|
         db_b.vm.box = "bento/ubuntu-16.04"

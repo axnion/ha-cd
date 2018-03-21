@@ -31,9 +31,9 @@ all:
 
     site_b:
       hosts:
-        app_b:
-          ansible_host: 10.0.10.31
+#        app_b:
+#          ansible_host: 10.0.10.31
         db_b:
           ansible_host: 10.0.10.32
-        lb_b:
-          ansible_host: 10.0.10.30
+#        lb_b:
+#          ansible_host: 10.0.10.30
