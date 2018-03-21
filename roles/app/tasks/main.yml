@@ -1,2 +1,4 @@
+# TODO: Remove credentials from app code!
 - include: nodejs.yml
 - include: deploy.yml
+- include: config.yml

@@ -3,3 +3,4 @@
   git:
     repo: https://github.com/axnion/ha_application.git
     dest: /opt/ha_application
+    force: yes
