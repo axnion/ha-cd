@@ -1,0 +1,24 @@
+---
+- hosts: db_a
+  become: yes
+  tasks:
+    - name: make users available anywhere
+      command: "cqlsh -e \"ALTER KEYSPACE \"system_auth\" WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 3};\" -u cassandra -p cassandra  "
+
+    - name: repair system_auth
+      command: nodetool repair system_auth
+
+    - name: restart cassandra
+      systemd:
+        state: restarted
+        name: cassandra
+
+    - name: pausing
+      pause:
+        seconds: 20
+
+    - name: add new user
+      command: "cqlsh -e \"CREATE ROLE admin WITH PASSWORD = 'admin' AND SUPERUSER = true AND LOGIN = true;\" -u cassandra -p cassandra {{ hostvars[inventory_hostname]['ansible_host'] }}"
+
+    - name: remove privileges of default user
+      command: "cqlsh -e \"ALTER ROLE cassandra WITH PASSWORD = 'thisisaveryrandompasswordineedtochangesomeday' AND SUPERUSER = false;\" -u admin -p admin {{ hostvars[inventory_hostname]['ansible_host'] }}"

@@ -13,3 +13,17 @@
     name: cassandra
     update_cache: yes
     state: present
+
+- name: start service
+  systemd:
+    name: cassandra
+    state: started
+    enabled: yes
+
+- name: apply cassandra.yaml
+  template:
+    src: cassandra.yml.j2
+    dest: /etc/cassandra/cassandra.yaml
+  register: cassandra_config
+  notify:
+    - restart cassandra

@@ -10,14 +10,15 @@ all:
       hosts:
         app_a:
 
-    lb:
-      hosts:
-        lb_a:
+#    lb:
+#      hosts:
+#        lb_a:
 
     db:
       hosts:
         db_a:
         db_b:
+        db_c:
 
 # SITE GROUPS ------------------------------------------------------------------
     site_a:
@@ -26,8 +27,8 @@ all:
           ansible_host: 10.0.10.21
         db_a:
           ansible_host: 10.0.10.22
-        lb_a:
-          ansible_host: 10.0.10.20
+#        lb_a:
+#          ansible_host: 10.0.10.20
 
     site_b:
       hosts:
@@ -37,3 +38,12 @@ all:
           ansible_host: 10.0.10.32
 #        lb_b:
 #          ansible_host: 10.0.10.30
+
+    site_c:
+      hosts:
+#        app_c:
+#          ansible_host: 10.0.10.41
+        db_c:
+          ansible_host: 10.0.10.42
+#        lb_b:
+#          ansible_host: 10.0.10.40
