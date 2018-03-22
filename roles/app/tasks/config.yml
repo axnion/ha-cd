@@ -1,4 +1,0 @@
-- name: apply application configuration
-  template:
-    src: config.js.j2
-    dest: /opt/ha_application/config.js

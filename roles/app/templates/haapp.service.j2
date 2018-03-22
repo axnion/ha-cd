@@ -1,0 +1,17 @@
+[Unit]
+Description=Haapp for demonstrating high availability deployment and maintenance.
+Requires=network.target
+
+[Service]
+ExecStart=/usr/bin/node {{ install_path }}/app.js
+WorkingDirectory={{ install_path }}
+Restart=always
+ # Restart service after 10 seconds if node service crashes
+ RestartSec=10
+ # Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=haapp
+
+[Install]
+WantedBy=multi-user.target

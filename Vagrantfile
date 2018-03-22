@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
         mgmt.vm.box = "bento/ubuntu-16.04"
         mgmt.vm.network :private_network, ip: "10.0.10.10"
         mgmt.vm.provider "virtualbox" do |vb|
-            vb.memory = "1024"
+            vb.memory = "512"
         end
         mgmt.vm.provision "shell", privileged: true, inline: <<-SHELL
           #! /bin/bash
@@ -29,7 +29,7 @@ Vagrant.configure("2") do |config|
         lb_a.vm.network :private_network, ip: "10.0.10.20"
         lb_a.vm.network "forwarded_port", guest: 80, host: 8081
         lb_a.vm.provider "virtualbox" do |vb|
-            vb.memory = "1024"
+            vb.memory = "512"
         end
     end
 
@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
         app_a.vm.network :private_network, ip: "10.0.10.21"
         app_a.vm.network "forwarded_port", guest: 3000, host: 8080
         app_a.vm.provider "virtualbox" do |vb|
-            vb.memory = "1024"
+            vb.memory = "512"
         end
     end
 
