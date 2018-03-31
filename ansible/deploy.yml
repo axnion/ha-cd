@@ -1,19 +1,4 @@
 ---
-- hosts: all
-  become: yes
-  roles:
-    - common
-
-- hosts: lb
-  become: yes
-  roles:
-    - lb
-
-- hosts: db
-  become: yes
-  roles:
-    - db
-
 - hosts: app
   become: yes
   serial: 1
