@@ -1,5 +1,9 @@
 let config = {}
 
+config.app = {}
+config.app.host = "{{ hostvars[inventory_hostname]['ansible_host'] }}"
+config.app.port = {{ port }}
+
 config.db = {}
 config.db.contactPoints = [{% for node in groups['db'] %}'{{ hostvars[node]['ansible_host'] }}'{% if not loop.last %},{% endif %}{% endfor %}]
 config.db.keyspace = "inventory"

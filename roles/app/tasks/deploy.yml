@@ -26,3 +26,7 @@
     state: restarted
     daemon_reload: yes
     enabled: yes
+
+- name: debug pause
+  pause:
+    seconds: 30

@@ -2,6 +2,10 @@
   apt:
     name: haproxy
 
+- name: installing socat
+  apt:
+    name: socat
+
 - name: apply configuration
   template:
     src: haproxy.cfg.j2

@@ -27,7 +27,8 @@ Vagrant.configure("2") do |config|
     config.vm.define :lb_a do |lb_a|
         lb_a.vm.box = "bento/ubuntu-16.04"
         lb_a.vm.network :private_network, ip: "10.0.10.20"
-        lb_a.vm.network "forwarded_port", guest: 80, host: 8081
+        lb_a.vm.network "forwarded_port", guest: 80, host: 8080
+        lb_a.vm.network "forwarded_port", guest: 9000, host: 9000
         lb_a.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
         end
@@ -37,7 +38,6 @@ Vagrant.configure("2") do |config|
     config.vm.define :app_a do |app_a|
         app_a.vm.box = "bento/ubuntu-16.04"
         app_a.vm.network :private_network, ip: "10.0.10.21"
-        app_a.vm.network "forwarded_port", guest: 3000, host: 8080
         app_a.vm.provider "virtualbox" do |vb|
             vb.memory = "512"
         end
@@ -47,13 +47,12 @@ Vagrant.configure("2") do |config|
     config.vm.define :db_a do |db_a|
         db_a.vm.box = "bento/ubuntu-16.04"
         db_a.vm.network :private_network, ip: "10.0.10.22"
-        db_a.vm.network "forwarded_port", guest: 80, host: 8082
         db_a.vm.provider "virtualbox" do |vb|
             vb.memory = "1024"
         end
     end
 
-    # Site B | Load Balancer
+#    # Site B | Load Balancer
 #    config.vm.define :lb_b do |lb_b|
 #        lb_b.vm.box = "bento/ubuntu-16.04"
 #        lb_b.vm.network :private_network, ip: "10.0.10.30"
@@ -62,35 +61,32 @@ Vagrant.configure("2") do |config|
 #            vb.memory = "1024"
 #        end
 #    end
-#
-#    # Site B | Application Server
-#    config.vm.define :app_b do |app_b|
-#        app_b.vm.box = "bento/ubuntu-16.04"
-#        app_b.vm.network :private_network, ip: "10.0.10.31"
-#        app_b.vm.network "forwarded_port", guest: 80, host: 8084
-#        app_b.vm.provider "virtualbox" do |vb|
+
+    # Site B | Application Server
+    config.vm.define :app_b do |app_b|
+        app_b.vm.box = "bento/ubuntu-16.04"
+        app_b.vm.network :private_network, ip: "10.0.10.31"
+        app_b.vm.provider "virtualbox" do |vb|
+            vb.memory = "1024"
+        end
+    end
+
+    # Site B | Database
+#    config.vm.define :db_b do |db_b|
+#        db_b.vm.box = "bento/ubuntu-16.04"
+#        db_b.vm.network :private_network, ip: "10.0.10.32"
+#        db_b.vm.provider "virtualbox" do |vb|
 #            vb.memory = "1024"
 #        end
 #    end
 #
-    # Site B | Database
-    config.vm.define :db_b do |db_b|
-        db_b.vm.box = "bento/ubuntu-16.04"
-        db_b.vm.network :private_network, ip: "10.0.10.32"
-        db_b.vm.network "forwarded_port", guest: 80, host: 8085
-        db_b.vm.provider "virtualbox" do |vb|
-            vb.memory = "1024"
-        end
-    end
-
-
-    # Site C | Database
-    config.vm.define :db_c do |db_c|
-        db_c.vm.box = "bento/ubuntu-16.04"
-        db_c.vm.network :private_network, ip: "10.0.10.42"
-        db_c.vm.network "forwarded_port", guest: 80, host: 8086
-        db_c.vm.provider "virtualbox" do |vb|
-            vb.memory = "1024"
-        end
-    end
+#
+#    # Site C | Database
+#    config.vm.define :db_c do |db_c|
+#        db_c.vm.box = "bento/ubuntu-16.04"
+#        db_c.vm.network :private_network, ip: "10.0.10.42"
+#        db_c.vm.provider "virtualbox" do |vb|
+#            vb.memory = "1024"
+#        end
+#    end
 end

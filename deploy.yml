@@ -4,17 +4,28 @@
   roles:
     - common
 
-- hosts: app
+- hosts: lb
   become: yes
   roles:
-    - app
+    - lb
 
 - hosts: db
   become: yes
   roles:
     - db
 
-- hosts: lb
+- hosts: app
   become: yes
+  serial: 1
+  pre_tasks:
+    - name: disable server in server pool
+      shell: echo "disable server {{ inventory_hostname }}/{{ hostvars[inventory_hostname]['ansible_host'] }}" | socat stdio /var/lib/haproxy/stats
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['lb'] }}"
+  post_tasks:
+    - name: enable server in server pool
+      shell: echo "enable server {{ inventory_hostname }}/{{ hostvars[inventory_hostname]['ansible_host'] }}" | socat stdio /var/lib/haproxy/stats
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['lb'] }}"
   roles:
-    - lb
+    - app
