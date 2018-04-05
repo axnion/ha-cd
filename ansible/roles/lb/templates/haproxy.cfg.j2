@@ -1,9 +1,10 @@
+# {{ ansible_managed }}
 global
 	log /dev/log	local0
 	log /dev/log	local1 notice
 	chroot /var/lib/haproxy
 	stats socket /run/haproxy/admin.sock mode 660 level admin
-	stats socket /etc/haproxy/haproxysock level admin
+	stats socket /var/lib/haproxy/stats level admin
 	stats timeout 30s
 	user haproxy
 	group haproxy
@@ -35,43 +36,25 @@ defaults
 	errorfile 503 /etc/haproxy/errors/503.http
 	errorfile 504 /etc/haproxy/errors/504.http
 
+	stats enable
+    stats uri /haproxy?stats
 
-frontend firstbalance
+frontend http
         bind *:80
         option forwardfor
         default_backend webservers
 
-backend webservers
+backend web
         balance roundrobin
         option allbackups
-        {% for host in groups['app'] %}
-          {% if hostvars[inventory_hostname]['site'] in hostvars[host]['site'] %}
-            server {{ host }} {{ hostvars[host]['ansible_host'] }}:3000 check
-          {% endif %}
-        {% endfor %}
-        {% for host in groups['app'] %}
-          {% if hostvars[inventory_hostname]['site'] not in hostvars[host]['site'] %}
-            server {{ host }} {{ hostvars[host]['ansible_host'] }}:3000 check backup
-          {% endif %}
-        {% endfor %}
 
-
-listen stats 0.0.0.0:9000       #Listen on all IP's on port 9000
-        mode http
-        balance
-        timeout client 5000
-        timeout connect 4000
-        timeout server 30000
-
-        #This is the virtual URL to access the stats page
-        stats uri /haproxy_stats
-
-        #Authentication realm. This can be set to anything. Escape space characters with a backslash.
-        stats realm HAProxy\ Statistics
-
-        #The user/pass you want to use. Change this password!
-        stats auth admin:passwordhere
-
-        #This allows you to take down and bring up back end servers.
-        #This will produce an error on older versions of HAProxy.
-        stats admin if TRUE
+{% for host in groups['app'] %}
+{% if hostvars[inventory_hostname]['site'] in hostvars[host]['site'] %}
+	server {{ host }} {{ hostvars[host]['ansible_host'] }}:3000 check
+{% endif %}
+{% endfor %}
+{% for host in groups['app'] %}
+{% if hostvars[inventory_hostname]['site'] not in hostvars[host]['site'] %}
+	server {{ host }} {{ hostvars[host]['ansible_host'] }}:3000 check
+{% endif %}
+{% endfor %}

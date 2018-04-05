@@ -2,9 +2,9 @@
   apt:
     name: haproxy
 
-- name: installing socat
+- name: installing haproxyctl
   apt:
-    name: socat
+    name: haproxyctl
 
 - name: apply configuration
   template:
