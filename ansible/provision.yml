@@ -1,0 +1,24 @@
+---
+# Install common software and update system on all servers
+- hosts: all
+  become: yes
+  roles:
+    - common
+
+# Install HAProxy on load balancers and apply configuration
+- hosts: lb
+  become: yes
+  roles:
+    - lb
+
+# Install Apache Cassandra on database servers and add configuation
+- hosts: db
+  become: yes
+  roles:
+    - db
+
+# Install NodeJS on application servers
+- hosts: app
+  become: yes
+  roles:
+    - nodejs
