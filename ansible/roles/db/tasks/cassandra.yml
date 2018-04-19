@@ -27,3 +27,6 @@
   register: cassandra_config
   notify:
     - restart cassandra
+
+
+# For initializing db, use run_once in ansible

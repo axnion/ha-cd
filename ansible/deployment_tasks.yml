@@ -1,0 +1,6 @@
+- name: Deploy
+  command: echo "yaay"
+
+- name: Smoke test
+  command: "/opt/test.sh {{ inventory_hostname }}"
+  register: cmd_result

@@ -1,56 +1,65 @@
 ---
-- hosts: all
+- hosts: app
   become: yes
-  roles:
-    - common
+  tasks:
+    - name: Create group with blue/green machines
+      group_by:
+        key: "{{ group }}-app"
+    - name: deploy test script
+      copy:
+        src: test.sh
+        dest: /opt/test.sh
+        mode: 0777
+
+# Blue Deployment
+- hosts: blue-app
+  become: yes
+  strategy: linear
+  tasks:
+    - name: Include deployment tasks
+      include_tasks: deployment_tasks.yml
+
+    - name: Restoring blue from backups
+      include_tasks: rollback_tasks.yml
+      when: play_hosts | map('extract', hostvars, 'cmd_result') | selectattr('failed','defined') | list | count > 0
 
 - hosts: lb
   become: yes
-  roles:
-    - lb
+  tasks:
+    - name: Add blue servers to load balancers
+      command: echo "yaay"
+    - name: Remove green servers from load blancers
+      command: echo "yaay"
 
-- hosts: db
-  become: yes
-  roles:
-    - db
-
-#- hosts: db_a
-#  become: yes
-#  tasks:
-#    - name: make users available anywhere
-#      command: "cqlsh -e \"ALTER KEYSPACE \"system_auth\" WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 3};\" -u cassandra -p cassandra  "
-#
-#    - name: repair system_auth
-#      command: nodetool repair system_auth
-#
-#    - name: restart cassandra
-#      systemd:
-#        state: restarted
-#        name: cassandra
-#
-#    - name: pausing
-#      pause:
-#        seconds: 20
-#
-#    - name: add new user
-#      command: "cqlsh -e \"CREATE ROLE admin WITH PASSWORD = 'admin' AND SUPERUSER = true AND LOGIN = true;\" -u cassandra -p cassandra {{ hostvars[inventory_hostname]['ansible_host'] }}"
-#
-#    - name: remove privileges of default user
-#      command: "cqlsh -e \"ALTER ROLE cassandra WITH PASSWORD = 'thisisaveryrandompasswordineedtochangesomeday' AND SUPERUSER = false;\" -u admin -p admin {{ hostvars[inventory_hostname]['ansible_host'] }}"
-
-- hosts: app
-  become: yes
-  serial: 1
-  pre_tasks:
-    - name: disable server in server pool
-      shell: echo "disable server web/{{ inventory_hostname }}" | socat stdio /var/lib/haproxy/stats
-      shell: haproxyctl "disable server web/{{ inventory_hostname }}"
+- hosts: blue-app
+  vars_prompt:
+    name: "confirmation"
+    prompt: "Do you wish to continue deployment? Otherwise rollback will be performed (yes/no)"
+    default: "no"
+    private: no
+  tasks:
+    - name: Add green servers to load balancers
+      command: echo "yaay"
       delegate_to: "{{ item }}"
       with_items: "{{ groups['lb'] }}"
-  post_tasks:
-    - name: enable server in server pool
-      shell: haproxyctl "enable server web/{{ inventory_hostname }}"
+      when: confirmation != "yes"
+
+    - name: Remove blue servers from load blancers
+      command: echo "yaay"
       delegate_to: "{{ item }}"
       with_items: "{{ groups['lb'] }}"
-  roles:
-    - app
+      when: confirmation != "yes"
+
+    - name: Rollback
+      include_tasks: rollback_tasks.yml
+      when: confirmation != "yes"
+
+# Green Deployment
+- hosts: green-app
+  become: yes
+  tasks:
+    - name: Deploy to green
+      include_tasks: deployment_tasks.yml
+
+    - name: connect to load balancer
+      command: echo "connecting"
