@@ -2,27 +2,63 @@
 all:
   hosts:
     mgmt:
-      ansible_host: 10.0.10.10
+      ansible_host: 10.0.10.5
   children:
 
 # CLUSTER GROUPS ---------------------------------------------------------------
-    app:
-      hosts:
-        app_a:
-          ansible_host: 10.0.10.21
-          site: site_a
-        app_b:
-          ansible_host: 10.0.10.31
-          site: site_b
-
     lb:
       hosts:
         lb_a:
-          ansible_host: 10.0.10.20
+          ansible_host: 10.0.10.10
           site: site_a
+          group: blue
+#        lb_b:
+#          ansible_host: 10.0.10.20
+#          site: site_b
+#          group: blue
+#        lb_c:
+#          ansible_host: 10.0.10.30
+#          site: site_c
+#          group: green
+#        lb_d:
+#          ansible_host: 10.0.10.40
+#          site: site_d
+#          group: green
+
+    app:
+      hosts:
+        app_a:
+          ansible_host: 10.0.10.11
+          site: site_a
+          group: blue
+        app_b:
+          ansible_host: 10.0.10.21
+          site: site_b
+          group: blue
+        app_c:
+          ansible_host: 10.0.10.31
+          site: site_c
+          group: green
+        app_d:
+          ansible_host: 10.0.10.41
+          site: site_d
+          group: green
 
     db:
       hosts:
         db_a:
-          ansible_host: 10.0.10.22
+          ansible_host: 10.0.10.12
           site: site_a
+          group: blue
+        db_b:
+          ansible_host: 10.0.10.22
+          site: site_b
+          group: blue
+        db_c:
+          ansible_host: 10.0.10.32
+          site: site_c
+          group: green
+        db_d:
+          ansible_host: 10.0.10.42
+          site: site_d
+          group: green
