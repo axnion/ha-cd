@@ -1,38 +1,84 @@
 - name: Importing variables
+  ignore_errors: true
   include_vars: vars.yml
 
+- name: Create backups of application server
+  ignore_errors: true
+  command: echo "yaay"
+
+- name: Create backups of database
+  ignore_errors: true
+  command: echo "yaay"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['db'] }}"
+  when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
+
+- name: Remove application server from load blancers
+  ignore_errors: true
+  command: echo "yaay"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['lb'] }}"
+
+- name: Disconnect database server from cluster
+  ignore_errors: true
+  command: echo "yaay"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['db'] }}"
+  when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
+
+- name: Stop service
+  ignore_errors: true
+  systemd:
+    name: haapp
+    state: stopped
+    daemon_reload: yes
+    enabled: yes
+
 - name: Downloading repository
+  ignore_errors: true
   git:
     repo: https://github.com/axnion/haapp.git
     dest: "{{ install_path }}"
     force: yes
 
 - name: Applying application configuration
+  ignore_errors: true
   template:
     src: config.js.j2
     dest: "{{ install_path }}/config.js"
 
 - name: Copying systemd configuration
+  ignore_errors: true
   template:
     src: haapp.service.j2
     dest: /etc/systemd/system/haapp.service
 
 - name: Installing dependencies
+  ignore_errors: true
   command: npm install
   args:
     chdir: "{{ install_path }}"
 
+- name: Run database migration script
+  ignore_errors: true
+  command: echo "REPLACE ME"
+
+- name: Reconnect database server to new cluster
+  ignore_errors: true
+  command: echo "REPLACE ME"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['db'] }}"
+  when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
+
 - name: Restarting service
+  ignore_errors: true
   systemd:
     name: haapp
     state: restarted
     daemon_reload: yes
     enabled: yes
 
-#- name: Pausing for debug
-#  pause:
-#    seconds: 30
-
 - name: Smoke test
   command: "/opt/test.sh {{ inventory_hostname }}"
+  ignore_errors: true
   register: cmd_result
