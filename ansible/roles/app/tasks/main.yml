@@ -1,54 +1,32 @@
-# For each blue server
+# Install NodeJS 9.x
+- name: check if nodejs is installed
+  command: node -v
+  register: result
+  changed_when: no
+  ignore_errors: true
 
-# Create backups
-
-# Remove application server from load balancers
-
-# Remove datbase server from all application servers
-
-# Apply changes to application server
-
-# Migrate database
-
-# Add databse server to new db cluster
-
-# Connect application to new db cluster
-
-# Smoke testing
-
-
-
-
-
-# Deploy application
-- name: download repository
-  git:
-    repo: https://github.com/axnion/haapp.git
-    dest: "{{ install_path }}"
+- name: download setup script
+  get_url:
+    url: https://deb.nodesource.com/setup_9.x
     force: yes
+    dest: /tmp/
+    mode: 0755
+  when: result|failed
 
-- name: apply application configuration
-  template:
-    src: config.js.j2
-    dest: "{{ install_path }}/config.js"
-
-- name: copy systemd configuration
-  template:
-    src: haapp.service.j2
-    dest: /etc/systemd/system/haapp.service
-
-- name: install dependencies
-  command: npm install
+- name: run setup script
+  command: /tmp/setup_9.x
   args:
-    chdir: "{{ install_path }}"
+    chdir: /tmp/
+  when: result is failed
 
-- name: restart service
-  systemd:
-    name: haapp
-    state: restarted
-    daemon_reload: yes
-    enabled: yes
+- name: remove setup script
+  file:
+    path: /tmp/setup_9.x
+    state: absent
+  when: result|failed
 
-- name: debug pause
-  pause:
-    seconds: 30
+- name: install nodejs
+  apt:
+    name: nodejs
+    update_cache: yes
+  when: result|failed

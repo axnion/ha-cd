@@ -1,5 +1,37 @@
-- name: Deploy
-  command: echo "yaay"
+- name: Importing variables
+  include_vars: vars.yml
+
+- name: Downloading repository
+  git:
+    repo: https://github.com/axnion/haapp.git
+    dest: "{{ install_path }}"
+    force: yes
+
+- name: Applying application configuration
+  template:
+    src: config.js.j2
+    dest: "{{ install_path }}/config.js"
+
+- name: Copying systemd configuration
+  template:
+    src: haapp.service.j2
+    dest: /etc/systemd/system/haapp.service
+
+- name: Installing dependencies
+  command: npm install
+  args:
+    chdir: "{{ install_path }}"
+
+- name: Restarting service
+  systemd:
+    name: haapp
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+
+#- name: Pausing for debug
+#  pause:
+#    seconds: 30
 
 - name: Smoke test
   command: "/opt/test.sh {{ inventory_hostname }}"

@@ -5,24 +5,41 @@
     - name: Create group with blue/green machines
       group_by:
         key: "{{ group }}-app"
-    - name: deploy test script
+    - name: deploy test script  # REMOVE REMOVE REMOVE!
       copy:
         src: test.sh
         dest: /opt/test.sh
         mode: 0777
 
+
+
 # Blue Deployment
 - hosts: blue-app
   become: yes
-  strategy: linear
+  serial: 1
   tasks:
+    - name: Remove application server from load blancers
+      command: echo "yaay"
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['lb'] }}"
+
+    - name: Disconnect database server from cluster
+      command: echo "yaay"
+      when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['db'] }}"
+
     - name: Include deployment tasks
       include_tasks: deployment_tasks.yml
 
-    - name: Restoring blue from backups
-      include_tasks: rollback_tasks.yml
-      when: play_hosts | map('extract', hostvars, 'cmd_result') | selectattr('failed','defined') | list | count > 0
+#    - name: Restoring blue from backups
+#      include_tasks: rollback_tasks.yml
+#      when: play_hosts | map('extract', hostvars, 'cmd_result') | selectattr('failed','defined') | list | count > 0
 
+
+
+
+# Shift from green environment to blue
 - hosts: lb
   become: yes
   tasks:
@@ -31,28 +48,47 @@
     - name: Remove green servers from load blancers
       command: echo "yaay"
 
-- hosts: blue-app
+
+
+
+# Full deployment confirmation
+# Yes - continue to deployment to all green server
+# No - Switch back to green servers, restore blue servers from backup
+- hosts: all
   vars_prompt:
     name: "confirmation"
     prompt: "Do you wish to continue deployment? Otherwise rollback will be performed (yes/no)"
     default: "no"
     private: no
   tasks:
+    - name: set fact
+      set_fact:
+        rollback: "{{ confirmation != 'yes' }}"
+
+
+- hosts: lb
+  become: yes
+  tasks:
     - name: Add green servers to load balancers
       command: echo "yaay"
-      delegate_to: "{{ item }}"
-      with_items: "{{ groups['lb'] }}"
-      when: confirmation != "yes"
+      when: hostvars[item]['group'] == 'green' and rollback
+      with_items: "{{ groups['app'] }}"
 
     - name: Remove blue servers from load blancers
       command: echo "yaay"
-      delegate_to: "{{ item }}"
-      with_items: "{{ groups['lb'] }}"
-      when: confirmation != "yes"
+      when: hostvars[item]['group'] == 'blue' and rollback
+      with_items: "{{ groups['app'] }}"
 
+
+
+
+- hosts: blue-app
+  tasks:
     - name: Rollback
       include_tasks: rollback_tasks.yml
-      when: confirmation != "yes"
+      when: rollback
+
+
 
 # Green Deployment
 - hosts: green-app

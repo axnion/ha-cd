@@ -1,6 +1,6 @@
 - name: Rollback test
   command: echo "Rolling back"
 
-- name: Blue deployment failed - halting
+- name: Halting deployment
   fail:
-    msg: "Halting deployment - error when deploying to blue"
+    msg: "Halting deployment"

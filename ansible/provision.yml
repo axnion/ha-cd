@@ -21,4 +21,4 @@
 - hosts: app
   become: yes
   roles:
-    - nodejs
+    - app
