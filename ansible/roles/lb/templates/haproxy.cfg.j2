@@ -44,14 +44,6 @@ frontend http
 
 backend web
         balance roundrobin
-        option allbackups
 {% for host in groups['app'] %}
-{% if hostvars[inventory_hostname]['site'] in hostvars[host]['site'] %}
 	server {{ host }} {{ hostvars[host]['ansible_host'] }}:3000 check
-{% endif %}
-{% endfor %}
-{% for host in groups['app'] %}
-{% if hostvars[inventory_hostname]['site'] not in hostvars[host]['site'] %}
-	server {{ host }} {{ hostvars[host]['ansible_host'] }}:3000 check backup
-{% endif %}
 {% endfor %}

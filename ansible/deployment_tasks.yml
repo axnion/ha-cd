@@ -5,7 +5,7 @@
 # Disconnect from loadbalancers ------------------------------------------------
 - name: Remove application server from load blancers
   ignore_errors: true
-  command: echo "yaay"
+  command: haproxyctl disable server web/"{{ inventory_hostname }}"
   delegate_to: "{{ item }}"
   with_items: "{{ groups['lb'] }}"
 
