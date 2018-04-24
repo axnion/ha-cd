@@ -2,23 +2,33 @@
   ignore_errors: true
   include_vars: vars.yml
 
-- name: Create backups of application server
-  ignore_errors: true
-  command: echo "yaay"
-
-- name: Create backups of database
-  ignore_errors: true
-  command: echo "yaay"
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['db'] }}"
-  when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
-
+# Disconnect from loadbalancers ------------------------------------------------
 - name: Remove application server from load blancers
   ignore_errors: true
   command: echo "yaay"
   delegate_to: "{{ item }}"
   with_items: "{{ groups['lb'] }}"
 
+# Make sure directories exist --------------------------------------------------
+- name: Create backup directory
+  file:
+    path: /opt/backups
+    state: directory
+
+- name: Create application directory
+  file:
+    path: /opt/haapp
+    state: directory
+
+# Backup app -------------------------------------------------------------------
+- name: Create backups of application server
+  ignore_errors: true
+  archive:
+    path: "{{ install_path }}"
+    dest: "{{ backup_path }}/app_backup.tar.gz"
+    format: gz
+
+# Disconnect database from cluster ---------------------------------------------
 - name: Disconnect database server from cluster
   ignore_errors: true
   command: echo "yaay"
@@ -26,6 +36,7 @@
   with_items: "{{ groups['db'] }}"
   when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
 
+# Stop service -----------------------------------------------------------------
 - name: Stop service
   ignore_errors: true
   systemd:
@@ -34,6 +45,7 @@
     daemon_reload: yes
     enabled: yes
 
+# Download, install, and configure ---------------------------------------------
 - name: Downloading repository
   ignore_errors: true
   git:
@@ -59,6 +71,7 @@
   args:
     chdir: "{{ install_path }}"
 
+# Migrate database and connect to new cluster ----------------------------------
 - name: Run database migration script
   ignore_errors: true
   command: echo "REPLACE ME"
@@ -70,6 +83,7 @@
   with_items: "{{ groups['db'] }}"
   when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
 
+# Restart service --------------------------------------------------------------
 - name: Restarting service
   ignore_errors: true
   systemd:
@@ -78,6 +92,7 @@
     daemon_reload: yes
     enabled: yes
 
+# Smoke test -------------------------------------------------------------------
 - name: Smoke test
   command: "/opt/test.sh {{ inventory_hostname }}"
   ignore_errors: true

@@ -1,2 +1,3 @@
 install_path: /opt/haapp
+backup_path: /opt/backups
 port: 3000
