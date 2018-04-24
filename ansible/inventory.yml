@@ -50,15 +50,19 @@ all:
           ansible_host: 10.0.10.12
           site: site_a
           group: blue
+          seed: true
         db_b:
           ansible_host: 10.0.10.22
           site: site_b
           group: blue
+          seed: false
         db_c:
           ansible_host: 10.0.10.32
           site: site_c
           group: green
+          seed: true
         db_d:
           ansible_host: 10.0.10.42
           site: site_d
           group: green
+          seed: false

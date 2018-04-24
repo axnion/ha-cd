@@ -31,19 +31,27 @@
 # Disconnect database from cluster ---------------------------------------------
 - name: Disconnect database server from cluster
   ignore_errors: true
-  command: echo "yaay"
+  command: nodetool "-h {{ hostvars[item]['ansible_host'] }} -u cassandra -pw cassandra"
   delegate_to: "{{ item }}"
   with_items: "{{ groups['db'] }}"
   when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
 
-# Stop service -----------------------------------------------------------------
-- name: Stop service
+# Stop services ----------------------------------------------------------------
+- name: Stop application service
   ignore_errors: true
   systemd:
     name: haapp
     state: stopped
-    daemon_reload: yes
-    enabled: yes
+
+- name: Stop database service
+  ignore_errors: true
+  systemd:
+    name: cassandra
+    state: stopped
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['db'] }}"
+  when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
+
 
 # Download, install, and configure ---------------------------------------------
 - name: Downloading repository
@@ -71,10 +79,24 @@
   args:
     chdir: "{{ install_path }}"
 
+- name: Set application server to updated
+  ignore_errors: true
+  set_fact:
+    updated: true
+
 # Migrate database and connect to new cluster ----------------------------------
 - name: Run database migration script
   ignore_errors: true
   command: echo "REPLACE ME"
+
+- name: Copy new database configuration
+  template:
+    src: cassandra.yml.j2
+    dest: /etc/cassandra/cassandra.yaml
+  register: cassandra_config
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['db'] }}"
+  when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
 
 - name: Reconnect database server to new cluster
   ignore_errors: true
@@ -83,12 +105,22 @@
   with_items: "{{ groups['db'] }}"
   when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
 
-# Restart service --------------------------------------------------------------
-- name: Restarting service
+# Starting services ------------------------------------------------------------
+- name: Starting database service
+  ignore_errors: true
+  systemd:
+    name: cassandra
+    state: started
+    enabled: yes
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['db'] }}"
+  when: hostvars[item]['site'] == hostvars[inventory_hostname]['site']
+
+- name: Starting service
   ignore_errors: true
   systemd:
     name: haapp
-    state: restarted
+    state: started
     daemon_reload: yes
     enabled: yes
 
@@ -96,4 +128,4 @@
 - name: Smoke test
   command: "/opt/test.sh {{ inventory_hostname }}"
   ignore_errors: true
-  register: cmd_result
+  register: smoke_test

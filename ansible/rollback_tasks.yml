@@ -1,6 +1,54 @@
-- name: Rollback test
-  command: echo "Rolling back"
+- name: Importing variables
+  ignore_errors: true
+  include_vars: vars.yml
 
+- name: Stop service
+  ignore_errors: true
+  systemd:
+    name: haapp
+    state: stopped
+    daemon_reload: yes
+    enabled: yes
+
+- name: Reset database
+  command: echo "Resetting database"
+
+# Restoring application folder -------------------------------------------------
+- name: Removing application folder
+  ignore_errors: true
+  file:
+    path: "{{ install_path }}"
+    state: absent
+
+- name: Restore application from backup
+  unarchive:
+    src: "{{ backup_path }}/app_backup.tar.gz"
+    dest: /opt/
+    remote_src: yes
+
+# Restart service --------------------------------------------------------------
+- name: Restarting service
+  ignore_errors: true
+  systemd:
+    name: haapp
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+
+- name: Smoke test
+  ignore_errors: true
+  command: "/opt/test.sh {{ inventory_hostname }}"
+  register: smoke_test
+
+# Connecting to loadbalancers --------------------------------------------------
+- name: Add application server to load balancers
+  ignore_errors: true
+  command: haproxyctl enable server web/"{{ inventory_hostname }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['lb'] }}"
+  when: smoke_test is succeeded
+
+# Stopping playbook execution --------------------------------------------------
 - name: Halting deployment
   fail:
     msg: "Halting deployment"
