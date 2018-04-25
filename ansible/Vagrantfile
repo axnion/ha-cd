@@ -110,7 +110,7 @@ Vagrant.configure("2") do |config|
         db_a.vm.box = "bento/ubuntu-16.04"
         db_a.vm.network :private_network, ip: "10.0.10.12"
         db_a.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
+            vb.memory = "1024"
         end
     end
 
@@ -119,7 +119,7 @@ Vagrant.configure("2") do |config|
         db_b.vm.box = "bento/ubuntu-16.04"
         db_b.vm.network :private_network, ip: "10.0.10.22"
         db_b.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
+            vb.memory = "1024"
         end
     end
 
@@ -128,7 +128,7 @@ Vagrant.configure("2") do |config|
         db_c.vm.box = "bento/ubuntu-16.04"
         db_c.vm.network :private_network, ip: "10.0.10.32"
         db_c.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
+            vb.memory = "1024"
         end
     end
 
@@ -137,7 +137,7 @@ Vagrant.configure("2") do |config|
         db_d.vm.box = "bento/ubuntu-16.04"
         db_d.vm.network :private_network, ip: "10.0.10.42"
         db_d.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
+            vb.memory = "1024"
         end
     end
 
