@@ -54,6 +54,13 @@
       when: hostvars[item]['group'] == 'green'
       with_items: "{{ groups['app'] }}"
 
+- hosts: db
+  become: yes
+  tasks:
+    - name: Migrate missing data
+      run_once: true
+      command: echo "Migrating missing data"
+
 
 
 

@@ -10,9 +10,6 @@
     daemon_reload: yes
     enabled: yes
 
-- name: Reset database
-  command: echo "Resetting database"
-
 # Restoring application folder -------------------------------------------------
 - name: Removing application folder
   ignore_errors: true
