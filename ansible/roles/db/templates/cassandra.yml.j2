@@ -422,7 +422,7 @@ seed_provider:
       parameters:
           # seeds is actually a comma-delimited list of addresses.
           # Ex: "<ip1>,<ip2>,<ip3>"
-          - seeds: "127.0.0.1,{% for node in groups['db'] %}{{ hostvars[node]['ansible_host'] }}{% if not loop.last %},{% endif %}{% endfor %}"
+          - seeds: "{% for node in groups['db'] %}{% if hostvars[node]['seed'] %}{{ hostvars[node]['ansible_host'] }}{% if not loop.last %},{% endif %}{% endif %}{% endfor %}"
 
 # For workloads with more data than can fit in memory, Cassandra's
 # bottleneck will be reads that need to fetch data from
@@ -1237,4 +1237,4 @@ back_pressure_strategy:
 #
 # otc_backlog_expiration_interval_ms: 200
 
-auto_bootstrap: false
+auto_bootstrap: true

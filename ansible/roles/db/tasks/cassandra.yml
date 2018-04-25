@@ -25,8 +25,9 @@
     src: cassandra.yml.j2
     dest: /etc/cassandra/cassandra.yaml
   register: cassandra_config
-  notify:
-    - restart cassandra
 
-
+- name: restart cassandra
+  systemd:
+    state: restarted
+    name: cassandra
 # For initializing db, use run_once in ansible

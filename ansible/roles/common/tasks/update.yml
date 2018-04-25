@@ -1,7 +1,7 @@
 - name: upgrading software from apt
   apt:
     update_cache: yes
-    upgrade: yes
+    #upgrade: yes
 
 - name: install git
   apt:
