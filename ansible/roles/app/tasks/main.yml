@@ -11,7 +11,7 @@
     force: yes
     dest: /tmp/
     mode: 0755
-  when: result|failed
+  when: result is failed
 
 - name: run setup script
   command: /tmp/setup_9.x
@@ -23,10 +23,10 @@
   file:
     path: /tmp/setup_9.x
     state: absent
-  when: result|failed
+  when: result is failed
 
 - name: install nodejs
   apt:
     name: nodejs
     update_cache: yes
-  when: result|failed
+  when: result is failed
