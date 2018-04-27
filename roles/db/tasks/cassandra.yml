@@ -30,4 +30,3 @@
   systemd:
     state: restarted
     name: cassandra
-# For initializing db, use run_once in ansible

@@ -18,6 +18,13 @@
   roles:
     - db
 
+# Install NodeJS on application servers
+- hosts: app
+  become: yes
+  roles:
+    - app
+
+# Initilizing changes to database
 - hosts: db[0]
   become: yes
   tasks:
@@ -45,10 +52,3 @@
 #
 #    - name: remove privileges of default user
 #      command: "cqlsh -e \"ALTER ROLE cassandra WITH PASSWORD = 'thisisaveryrandompasswordineedtochangesomeday' AND SUPERUSER = false;\" -u admin -p admin {{ hostvars[inventory_hostname]['ansible_host'] }}"
-
-
-# Install NodeJS on application servers
-- hosts: app
-  become: yes
-  roles:
-    - app

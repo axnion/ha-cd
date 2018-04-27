@@ -62,13 +62,13 @@
     chdir: "{{ install_path }}"
 
 # Starting services ------------------------------------------------------------
-#- name: Starting service
-#  ignore_errors: true
-#  systemd:
-#    name: haapp
-#    state: started
-#    daemon_reload: yes
-#    enabled: yes
+- name: Starting service
+  ignore_errors: true
+  systemd:
+    name: haapp
+    state: started
+    daemon_reload: yes
+    enabled: yes
 
 # Smoke test -------------------------------------------------------------------
 

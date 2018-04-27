@@ -31,10 +31,10 @@ all:
           ansible_host: 10.0.10.11
           site: site_a
           group: blue
-#        app_b:
-#          ansible_host: 10.0.10.21
-#          site: site_b
-#          group: blue
+        app_b:
+          ansible_host: 10.0.10.21
+          site: site_b
+          group: blue
 #        app_c:
 #          ansible_host: 10.0.10.31
 #          site: site_c

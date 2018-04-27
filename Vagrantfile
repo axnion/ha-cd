@@ -76,15 +76,15 @@ Vagrant.configure("2") do |config|
         end
     end
 
-#    # Site B | Application Server
-#    config.vm.define :app_b do |app_b|
-#        app_b.vm.box = "bento/ubuntu-16.04"
-#        app_b.vm.network :private_network, ip: "10.0.10.21"
-#        app_b.vm.provider "virtualbox" do |vb|
-#            vb.memory = "512"
-#        end
-#    end
-#
+    # Site B | Application Server
+    config.vm.define :app_b do |app_b|
+        app_b.vm.box = "bento/ubuntu-16.04"
+        app_b.vm.network :private_network, ip: "10.0.10.21"
+        app_b.vm.provider "virtualbox" do |vb|
+            vb.memory = "512"
+        end
+    end
+
 #    # Site C | Application Server
 #    config.vm.define :app_c do |app_c|
 #        app_c.vm.box = "bento/ubuntu-16.04"
