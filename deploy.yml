@@ -9,7 +9,6 @@
       set_fact:
         updated: false
 
-
 # Create runtime groups ---------------------------------------------------------
 - hosts: app
   become: yes
@@ -17,13 +16,6 @@
     - name: Create group with blue/green machines
       group_by:
         key: "{{ group }}-app"
-    - name: deploy test script  # REMOVE REMOVE REMOVE!
-      copy:
-        src: test.sh
-        dest: /opt/test.sh
-        mode: 0777
-
-
 
 # Blue Deployment --------------------------------------------------------------
 - hosts: blue-app
@@ -36,9 +28,6 @@
     - name: Restoring blue from backups
       include_tasks: rollback_tasks.yml
       when: play_hosts | map('extract', hostvars, 'smoke_test') | selectattr('failed', 'equalto', true) | list | count > 0
-
-
-
 
 # Switch to blue environment ---------------------------------------------------
 - hosts: lb
@@ -61,9 +50,6 @@
       run_once: true
       command: echo "Migrating missing data"
 
-
-
-
 # Restore if rollback is requested ---------------------------------------------
 - hosts: lb
   become: yes
@@ -84,9 +70,6 @@
     - name: Rollback
       include_tasks: rollback_tasks.yml
       when: rollback
-
-
-
 
 # Green Deployment -------------------------------------------------------------
 - hosts: green-app

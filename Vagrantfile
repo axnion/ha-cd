@@ -76,32 +76,32 @@ Vagrant.configure("2") do |config|
         end
     end
 
-    # Site B | Application Server
-    config.vm.define :app_b do |app_b|
-        app_b.vm.box = "bento/ubuntu-16.04"
-        app_b.vm.network :private_network, ip: "10.0.10.21"
-        app_b.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
-        end
-    end
-
-    # Site C | Application Server
-    config.vm.define :app_c do |app_c|
-        app_c.vm.box = "bento/ubuntu-16.04"
-        app_c.vm.network :private_network, ip: "10.0.10.31"
-        app_c.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
-        end
-    end
-
-    # Site D | Application Server
-    config.vm.define :app_d do |app_d|
-        app_d.vm.box = "bento/ubuntu-16.04"
-        app_d.vm.network :private_network, ip: "10.0.10.41"
-        app_d.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
-        end
-    end
+#    # Site B | Application Server
+#    config.vm.define :app_b do |app_b|
+#        app_b.vm.box = "bento/ubuntu-16.04"
+#        app_b.vm.network :private_network, ip: "10.0.10.21"
+#        app_b.vm.provider "virtualbox" do |vb|
+#            vb.memory = "512"
+#        end
+#    end
+#
+#    # Site C | Application Server
+#    config.vm.define :app_c do |app_c|
+#        app_c.vm.box = "bento/ubuntu-16.04"
+#        app_c.vm.network :private_network, ip: "10.0.10.31"
+#        app_c.vm.provider "virtualbox" do |vb|
+#            vb.memory = "512"
+#        end
+#    end
+#
+#    # Site D | Application Server
+#    config.vm.define :app_d do |app_d|
+#        app_d.vm.box = "bento/ubuntu-16.04"
+#        app_d.vm.network :private_network, ip: "10.0.10.41"
+#        app_d.vm.provider "virtualbox" do |vb|
+#            vb.memory = "512"
+#        end
+#    end
 
 # DATABASE SERVER --------------------------------------------------------------
 
@@ -123,22 +123,22 @@ Vagrant.configure("2") do |config|
         end
     end
 
-    # Site C | Database
-    config.vm.define :db_c do |db_c|
-        db_c.vm.box = "bento/ubuntu-16.04"
-        db_c.vm.network :private_network, ip: "10.0.10.32"
-        db_c.vm.provider "virtualbox" do |vb|
-            vb.memory = "1024"
-        end
-    end
-
-    # Site D | Database
-    config.vm.define :db_d do |db_d|
-        db_d.vm.box = "bento/ubuntu-16.04"
-        db_d.vm.network :private_network, ip: "10.0.10.42"
-        db_d.vm.provider "virtualbox" do |vb|
-            vb.memory = "1024"
-        end
-    end
+#    # Site C | Database
+#    config.vm.define :db_c do |db_c|
+#        db_c.vm.box = "bento/ubuntu-16.04"
+#        db_c.vm.network :private_network, ip: "10.0.10.32"
+#        db_c.vm.provider "virtualbox" do |vb|
+#            vb.memory = "1024"
+#        end
+#    end
+#
+#    # Site D | Database
+#    config.vm.define :db_d do |db_d|
+#        db_d.vm.box = "bento/ubuntu-16.04"
+#        db_d.vm.network :private_network, ip: "10.0.10.42"
+#        db_d.vm.provider "virtualbox" do |vb|
+#            vb.memory = "1024"
+#        end
+#    end
 
 end
