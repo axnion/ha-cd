@@ -71,10 +71,7 @@
     enabled: yes
 
 # Smoke test -------------------------------------------------------------------
-
-# WAIT FOR localhost:3000 är uppe
-
 - name: Smoke test
-  command: echo "yaay"
+  command: node "{{ install_path }}/tests/smoke_test/test.js"
   ignore_errors: true
   register: smoke_test

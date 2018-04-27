@@ -43,12 +43,11 @@
       when: hostvars[item]['group'] == 'green'
       with_items: "{{ groups['app'] }}"
 
-- hosts: db
+- hosts: app[0]
   become: yes
   tasks:
     - name: Migrate missing data
-      run_once: true
-      command: echo "Migrating missing data"
+      command: node "{{ install_path }}/db/tools/finilize_migration.js"
 
 # Restore if rollback is requested ---------------------------------------------
 - hosts: lb

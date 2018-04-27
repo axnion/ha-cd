@@ -34,7 +34,7 @@
 
 - name: Smoke test
   ignore_errors: true
-  command: "/opt/test.sh {{ inventory_hostname }}"
+  command: node "{{ install_path }}/tests/smoke_test/test.js"
   register: smoke_test
 
 # Connecting to loadbalancers --------------------------------------------------
