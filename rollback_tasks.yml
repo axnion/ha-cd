@@ -18,10 +18,16 @@
     state: absent
 
 - name: Restore application from backup
+  ignore_errors: true
   unarchive:
     src: "{{ backup_path }}/app_backup.tar.gz"
     dest: /opt/
     remote_src: yes
+
+- name: Roll back version of database
+  ignore_errors: true
+  command: node "{{ install_path }}/db/tools/rollback.js"
+
 
 # Restart service --------------------------------------------------------------
 - name: Restarting service

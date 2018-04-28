@@ -61,6 +61,11 @@
   args:
     chdir: "{{ install_path }}"
 
+- name: Migrating database
+  ignore_errors: true
+  run_once: true
+  command: node "{{ install_path }}/db/tools/migration.js"
+
 # Starting services ------------------------------------------------------------
 - name: Starting service
   ignore_errors: true
@@ -71,6 +76,16 @@
     enabled: yes
 
 # Smoke test -------------------------------------------------------------------
+- name: Wait for application server to be available
+  ignore_errors: true
+  uri:
+    url: "http://localhost:3000"
+    status_code: 200
+  register: response
+  until: response.status == 200
+  retries: 10
+  delay: 5
+
 - name: Smoke test
   command: node "{{ install_path }}/tests/smoke_test/test.js"
   ignore_errors: true

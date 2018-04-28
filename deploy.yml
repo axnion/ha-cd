@@ -24,6 +24,10 @@
   tasks:
     - name: Include deployment tasks
       include_tasks: deployment_tasks.yml
+      with_items: "{{ play_hosts }}"
+      when: "hostvars[host_item].inventory_hostname == inventory_hostname"
+      loop_control:
+        loop_var: host_item
 
     - name: Restoring blue from backups
       include_tasks: rollback_tasks.yml
@@ -47,7 +51,7 @@
   become: yes
   tasks:
     - name: Migrate missing data
-      command: node "{{ install_path }}/db/tools/finilize_migration.js"
+      command: node "{{ install_path }}/db/tools/migrateNewData.js"
 
 # Restore if rollback is requested ---------------------------------------------
 - hosts: lb
