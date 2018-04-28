@@ -1,13 +1,11 @@
-services:
-
 execution:
 - concurrency: 1
   throughput: 5
-  hold-for: 10m
+  hold-for: 30s
   scenario: stress
 
 scenarios:
-  smoke:
+  stress:
     timeout: 5s
     default-address: http://localhost:8081
     requests:
