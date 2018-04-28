@@ -1,4 +1,9 @@
 ---
+- name: Intall pip
+  apt:
+    name: python-pip
+    state: present
+
 - name: Installing bzt
   pip:
     name: bzt
