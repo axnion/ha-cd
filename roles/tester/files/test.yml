@@ -1,7 +1,7 @@
 execution:
 - concurrency: 1
   throughput: 5
-  hold-for: 30s
+  hold-for: 1m
   scenario: stress
 
 scenarios:
