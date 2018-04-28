@@ -1,0 +1,11 @@
+
+- name: Move local configuration file
+  template:
+    src: named.conf.local
+    dest: /etc/bind/named.conf.local
+
+- name: Restarting bind
+  systemd:
+    name: bind9
+    state: restarted
+    enabled: yes

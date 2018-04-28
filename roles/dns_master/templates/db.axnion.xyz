@@ -1,0 +1,23 @@
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     ns1.axnion.xyz. admin.axnion.xyz. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+; name servers - NS records
+       IN      NS      ns1.axnion.xyz.
+       IN      NS      ns2.axnion.xyz.
+
+; name servers - A records
+ns1.axnion.xyz.          IN      A       10.128.10.11
+ns2.axnion.xyz.          IN      A       10.128.20.12
+
+; 10.0.10.0/16 - A records
+{% for node in groups['lb'] %}
+test.axnion.xyz.        IN      A      {{ hostvars[node]['ansible_host'] }}
+{% endfor %}

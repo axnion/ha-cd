@@ -1,0 +1,7 @@
+- name: Move resolver file to client
+  template:
+    src: resolv
+    dest: /etc/resolvconf/resolv.conf.d/base
+
+- name: Generate resolv.conf
+  command: resolvconf -u

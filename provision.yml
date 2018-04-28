@@ -1,9 +1,30 @@
 ---
 # Install common software and update system on all servers
-#- hosts: all
-#  become: yes
-#  roles:
-#    - common
+- hosts: all
+  become: yes
+  roles:
+    - common
+
+# Install and configure DNS
+- hosts: ns
+  become: yes
+  roles:
+    - bind9
+
+- hosts: ns1
+  become: yes
+  roles:
+    - dns_master
+
+- hosts: ns2
+  become: yes
+  roles:
+    - dns_slave
+
+- hosts: all
+  become: yes
+  roles:
+    - dns_client
 
 # Install HAProxy on load balancers and apply configuration
 - hosts: lb

@@ -1,0 +1,11 @@
+zone "axnion.xyz" {
+    type master;
+    file "/etc/bind/zones/db.axnion.xyz";
+    allow-transfer { {{ hostvars['ns2']['ansible_host'] }}; };
+};
+
+zone "0.10.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.10.0";
+    allow-transfer { {{ hostvars['ns2']['ansible_host'] }}; };
+};

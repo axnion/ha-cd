@@ -1,0 +1,22 @@
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     ns1.axnion.xyz. admin.axnion.xyz. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+; name servers - NS records
+       IN      NS      ns1.axnion.xyz.
+       IN      NS      ns2.axnion.xyz.
+
+; PTR Records
+10.6   IN      PTR     ns1.axnion.xyz.
+10.7   IN      PTR     ns2.axnion.xyz.
+10.10  IN      PTR     test.axnion.xyz.
+10.20  IN      PTR     test.axnion.xyz.
+10.30  IN      PTR     test.axnion.xyz.
+10.40  IN      PTR     test.axnion.xyz.

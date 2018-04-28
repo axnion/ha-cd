@@ -1,0 +1,4 @@
+search axnion.xyz
+{% for node in groups['ns'] %}
+nameserver {{ hostvars[node]['ansible_host'] }}
+{% endfor %}

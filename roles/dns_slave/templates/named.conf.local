@@ -1,0 +1,11 @@
+zone "axnion.xyz" {
+    type slave;
+    file "slaves/db.axnion.xyz";
+    allow-transfer { {{ hostvars['ns1']['ansible_host'] }}; };
+};
+
+zone "128.10.in-addr.arpa" {
+    type slave;
+    file "slaves/db.10.0";
+    allow-transfer { {{ hostvars['ns1']['ansible_host'] }}; };
+};

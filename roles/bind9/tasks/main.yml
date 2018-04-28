@@ -1,0 +1,14 @@
+- name: Installing bind9
+  apt:
+    name: bind9
+    state: present
+
+- name: Moving defaults file
+  copy:
+    src: bind9
+    dest: /etc/default/bind9
+
+- name: Move options configuration file
+  template:
+    src: named.conf.options
+    dest: /etc/bind/named.conf.options

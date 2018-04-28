@@ -1,0 +1,25 @@
+- name: Move local configuration file
+  template:
+    src: named.conf.local
+    dest: /etc/bind/named.conf.local
+
+- name: Create zones directory
+  file:
+    path: /etc/bind/zones
+    state: directory
+
+- name: Move forward zone file
+  template:
+    src: db.axnion.xyz
+    dest: /etc/bind/zones/db.axnion.xyz
+
+- name: Move reverse zone file
+  template:
+    src: db.10.0
+    dest: /etc/bind/zones/db.10.0
+
+- name: Restarting bind
+  systemd:
+    name: bind9
+    state: restarted
+    enabled: yes
