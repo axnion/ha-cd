@@ -1,0 +1,17 @@
+services:
+
+execution:
+- concurrency: 1
+  throughput: 5
+  hold-for: 10m
+  scenario: stress
+
+scenarios:
+  smoke:
+    timeout: 5s
+    default-address: http://localhost:8081
+    requests:
+    - url: /
+      method: GET
+    - url: /item
+      method: GET

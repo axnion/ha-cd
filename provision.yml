@@ -64,12 +64,6 @@
         state: restarted
         name: cassandra
 
-#    - name: pausing
-#      pause:
-#        seconds: 20
-#
-#    - name: add new user
-#      command: "cqlsh -e \"CREATE ROLE admin WITH PASSWORD = 'admin' AND SUPERUSER = true AND LOGIN = true;\" -u cassandra -p cassandra {{ hostvars[inventory_hostname]['ansible_host'] }}"
-#
-#    - name: remove privileges of default user
-#      command: "cqlsh -e \"ALTER ROLE cassandra WITH PASSWORD = 'thisisaveryrandompasswordineedtochangesomeday' AND SUPERUSER = false;\" -u admin -p admin {{ hostvars[inventory_hostname]['ansible_host'] }}"
+- hosts: tester
+  roles:
+    - tester

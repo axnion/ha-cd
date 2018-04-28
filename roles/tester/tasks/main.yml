@@ -1,3 +1,14 @@
 ---
-- hosts:
-  
+- name: Installing bzt
+  pip:
+    name: bzt
+
+- name: Creating testing folder
+  file:
+    path: ~/tests
+    state: directory
+
+- name: Moving test to server
+  copy:
+    src: test.yml
+    dest: ~/
