@@ -1,5 +1,5 @@
 ---
-- name: Intall pip
+- name: Installing pip
   apt:
     name: python-pip
     state: present
@@ -17,5 +17,5 @@
 - name: Moving test to server
   copy:
     src: test.yml
-    dest: /home/vagrant/tester/test.yml
+    dest: /home/vagrant/tests/test.yml
     owner: vagrant
