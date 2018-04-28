@@ -1,3 +1,32 @@
-# TODO: Create new user and remove existing users like cassandra:cassandra
-- include: java.yml
-- include: cassandra.yml
+- name: adding key
+  apt_key:
+    url: https://www.apache.org/dist/cassandra/KEYS
+    state: present
+
+- name: adding repository
+  apt_repository:
+    repo: deb http://www.apache.org/dist/cassandra/debian 311x main
+    state: present
+
+- name: installing
+  apt:
+    name: cassandra
+    update_cache: yes
+    state: present
+
+- name: start service
+  systemd:
+    name: cassandra
+    state: started
+    enabled: yes
+
+- name: apply cassandra.yaml
+  template:
+    src: cassandra.yml.j2
+    dest: /etc/cassandra/cassandra.yaml
+  register: cassandra_config
+
+- name: restart cassandra
+  systemd:
+    state: restarted
+    name: cassandra

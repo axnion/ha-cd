@@ -1,5 +1,4 @@
 # Installing Oracle Java 8
-# TODO: Update to license is not accepted every time.
 - name: adding ppa
   apt_repository:
     repo: ppa:webupd8team/java

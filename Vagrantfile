@@ -27,7 +27,7 @@ config.vm.define :tester do |tester|
   tester.vm.box = "bento/ubuntu-16.04"
   tester.vm.network :private_network, ip: "10.0.10.4"
   tester.vm.provider "virtualbox" do |vb|
-    vb.memory = "1024"
+    vb.memory = "512"
   end
 end
 
@@ -59,7 +59,7 @@ end
         lb_a.vm.network :private_network, ip: "10.0.10.10"
         lb_a.vm.network "forwarded_port", guest: 80, host: 8081
         lb_a.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
+            vb.memory = "256"
         end
     end
 
@@ -69,7 +69,7 @@ end
         lb_b.vm.network :private_network, ip: "10.0.10.20"
         lb_b.vm.network "forwarded_port", guest: 80, host: 8082
         lb_b.vm.provider "virtualbbx" do |vb|
-            vb.memory = "512"
+            vb.memory = "256"
         end
     end
 
@@ -79,7 +79,7 @@ end
         lb_c.vm.network :private_network, ip: "10.0.10.30"
         lb_c.vm.network "forwarded_port", guest: 80, host: 8083
         lb_c.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
+            vb.memory = "256"
         end
     end
 
@@ -89,7 +89,7 @@ end
         lb_d.vm.network :private_network, ip: "10.0.10.40"
         lb_d.vm.network "forwarded_port", guest: 80, host: 8084
         lb_d.vm.provider "virtualbbx" do |vb|
-            vb.memory = "512"
+            vb.memory = "256"
         end
     end
 
