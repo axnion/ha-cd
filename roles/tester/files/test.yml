@@ -7,7 +7,7 @@ execution:
 scenarios:
   stress:
     timeout: 5s
-    default-address: http://localhost:8081
+    default-address: http://test.axnion.xyz
     requests:
     - url: /
       method: GET
