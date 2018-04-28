@@ -1,7 +1,6 @@
-- name: Move resolver file to client
-  template:
-    src: resolv
-    dest: /etc/resolvconf/resolv.conf.d/base
-
-- name: Generate resolv.conf
-  command: resolvconf -u
+- name: Add DNS server
+  lineinfile:
+    path: /etc/network/interfaces
+    line: "      dns-nameservers 10.0.10.6"
+    state: present
+    insertbefore: '#VAGRANT-END'
