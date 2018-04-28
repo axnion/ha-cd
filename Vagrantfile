@@ -27,7 +27,8 @@ config.vm.define :tester do |tester|
   tester.vm.box = "bento/ubuntu-16.04"
   tester.vm.network :private_network, ip: "10.0.10.4"
   tester.vm.provider "virtualbox" do |vb|
-    vb.memory = "512"
+    vb.memory = "1024"
+    vb.cpus = 2
   end
 end
 
