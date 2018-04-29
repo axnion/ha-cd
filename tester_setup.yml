@@ -1,0 +1,6 @@
+---
+- hosts: tester
+  become: yes
+  roles:
+    - java
+    - tester
