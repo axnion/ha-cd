@@ -14,8 +14,20 @@
     state: directory
     owner: vagrant
 
-- name: Moving test to server
+- name: Moving low test to server
   copy:
-    src: test.yml
-    dest: /home/vagrant/tests/test.yml
+    src: low.yml
+    dest: /home/vagrant/tests/low.yml
+    owner: vagrant
+
+- name: Moving medium test to server
+  copy:
+    src: medium.yml
+    dest: /home/vagrant/tests/medium.yml
+    owner: vagrant
+
+- name: Moving high test to server
+  copy:
+    src: high.yml
+    dest: /home/vagrant/tests/high.yml
     owner: vagrant
