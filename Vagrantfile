@@ -101,7 +101,7 @@ end
         app_a.vm.box = "bento/ubuntu-16.04"
         app_a.vm.network :private_network, ip: "10.0.10.11"
         app_a.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
+            vb.memory = "256"
         end
     end
 
@@ -110,7 +110,7 @@ end
         app_b.vm.box = "bento/ubuntu-16.04"
         app_b.vm.network :private_network, ip: "10.0.10.21"
         app_b.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
+            vb.memory = "256"
         end
     end
 
@@ -119,7 +119,7 @@ end
         app_c.vm.box = "bento/ubuntu-16.04"
         app_c.vm.network :private_network, ip: "10.0.10.31"
         app_c.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
+            vb.memory = "256"
         end
     end
 
@@ -128,7 +128,7 @@ end
         app_d.vm.box = "bento/ubuntu-16.04"
         app_d.vm.network :private_network, ip: "10.0.10.41"
         app_d.vm.provider "virtualbox" do |vb|
-            vb.memory = "512"
+            vb.memory = "256"
         end
     end
 
