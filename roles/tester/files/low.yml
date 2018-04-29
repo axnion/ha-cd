@@ -8,7 +8,5 @@ scenarios:
   stress:
     default-address: http://test.axnion.xyz
     requests:
-    - url: /
-      method: GET
     - url: /item
       method: GET
