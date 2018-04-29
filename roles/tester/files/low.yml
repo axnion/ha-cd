@@ -1,11 +1,12 @@
 execution:
-- concurrency: 500
-  throughput: 1000
+- concurrency: 5
+  throughput: 10
   hold-for: 5m
   scenario: stress
 
 scenarios:
   stress:
+    timeout: 10s
     default-address: http://test.axnion.xyz
     requests:
     - url: /item

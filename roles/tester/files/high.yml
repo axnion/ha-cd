@@ -6,6 +6,7 @@ execution:
 
 scenarios:
   stress:
+    timeout: 10s
     default-address: http://test.axnion.xyz
     requests:
     - url: /item
