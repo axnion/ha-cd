@@ -42,6 +42,11 @@
       when: hostvars[item]['group'] == 'blue'
       with_items: "{{ groups['app'] }}"
 
+    - name: Let blue catch up
+      pause:
+        seconds: 5
+      when: hostvars[item]['group'] == 'blue'
+
     - name: Remove green servers from load blancers
       command: haproxyctl disable server web/"{{ hostvars[item]['inventory_hostname'] }}"
       when: hostvars[item]['group'] == 'green'
@@ -61,6 +66,11 @@
       command: haproxyctl enable server web/"{{ hostvars[item]['inventory_hostname'] }}"
       when: hostvars[item]['group'] == 'green' and rollback
       with_items: "{{ groups['app'] }}"
+
+    - name: Let blue catch up
+      pause:
+        seconds: 5
+      when: hostvars[item]['group'] == 'blue' and rollback
 
     - name: Remove blue servers from load blancers
       command: haproxyctl disable server web/"{{ hostvars[item]['inventory_hostname'] }}"
