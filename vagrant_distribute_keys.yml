@@ -1,3 +1,4 @@
+# Used to easily distribute ssh keys throuh the Vagrant test environment
 ---
 - hosts: mgmt
   tasks:
